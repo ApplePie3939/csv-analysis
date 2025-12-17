@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>無料CSV解析ツール</title>
+  <meta name="description" content="CSVをアップロードするだけ。解析はすべてブラウザ内で行われ、外部通信は一切ありません。">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="img/favicon.ico">
+
+  <!-- セキュリティメタ -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="Referrer-Policy" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          script-src 'self';
+          style-src 'self';
+          img-src 'self' data:;
+          connect-src 'none';
+          font-src 'self';
+        ">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>CSV解析Webツール</h1>
+  <p class="description">
+    CSVファイルをブラウザ上で安全に解析・表示します。ファイルは外部に送信されません。
+  </p>
+</header>
+
+<div class="box">
+  <label>
+    CSVファイルを選択：
+    <input type="file" id="csvFile" accept=".csv">
+  </label>
+  <p class="notice">
+    ※ UTF-8 / カンマ区切りCSV対応<br>
+    ※ 最大5MB・10,000行まで
+  </p>
+</div>
+
+<div class="box" id="controls" style="display:none;">
+  <input type="text" id="searchInput" placeholder="検索キーワード">
+</div>
+
+<div id="result" class="box" style="display:none;">
+  <h2>解析結果</h2>
+  <div id="tableArea"></div>
+</div>
+
+<footer>
+  <p><strong>セキュリティについて</strong></p>
+  <p>
+    CSVの解析処理はすべてブラウザ内で行われ、
+    ファイル内容がサーバーに送信されることはありません
+  </p>
+  <p>© CSV Analyzer Local</p>
+</footer>
+
+<script src="js/csv-analyzer.js"></script>
+</body>
+</html>

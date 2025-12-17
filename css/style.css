@@ -1,0 +1,79 @@
+@charset "utf-8";
+
+body {
+  font-family: "Meiryo", sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 16px;
+}
+
+header {
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.description {
+  color: #555;
+  font-size: 14px;
+}
+
+.box {
+  background: #fff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+
+input[type="file"],
+input[type="text"] {
+  font-size: 16px;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 8px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+th {
+  background: #f0f0f0;
+}
+
+.notice {
+  font-size: 12px;
+  color: #666;
+}
+
+#tableArea {
+  overflow-x: auto;
+}
+
+footer {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  margin-top: 32px;
+}
