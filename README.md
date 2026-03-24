@@ -44,14 +44,14 @@ CSV Analyzer Local
 
 ディレクトリ構成
 
-.
-├── index.html          # UI構造とセキュリティ設定
-├── css/
-│   └── style.css       # レイアウト・デザイン
-├── js/
-│   └── csv-analyzer.js # パース・検索ロジック (コアコード)
-└── img/
-    └── favicon.ico     # アイコン
+    .
+    ├── index.html          # UI構造とセキュリティ設定
+    ├── css/
+    │   └── style.css       # レイアウト・デザイン
+    ├── js/
+    │   └── csv-analyzer.js # パース・検索ロジック (コアコード)
+    └── img/
+        └── favicon.ico     # アイコン
 
 開発者向け情報
 
