@@ -26,6 +26,7 @@
     ・自動エンコーディング: 日本語環境で一般的な UTF-8 に対応。
 
 技術仕様
+
     言語 HTML5, CSS3, JavaScript (ES6+)
 
     ライブラリ なし (Vanilla JS 100%)
