@@ -26,12 +26,11 @@
     ・自動エンコーディング: 日本語環境で一般的な UTF-8 に対応。
 
 技術仕様
-
-言語 HTML5, CSS3, JavaScript (ES6+)
-ライブラリ なし (Vanilla JS 100%)
-ファイル読み込み	FileReader API
-セキュリティ CSP (Content Security Policy)
-動作環境 Chrome, Edge, Firefox, Safari
+    言語 HTML5, CSS3, JavaScript (ES6+)
+    ライブラリ なし (Vanilla JS 100%)
+    ファイル読み込み	FileReader API
+    セキュリティ CSP (Content Security Policy)
+    動作環境 Chrome, Edge, Firefox, Safari
 
 使い方
 
