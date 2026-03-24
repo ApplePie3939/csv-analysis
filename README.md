@@ -1,4 +1,4 @@
-CSV Analyzer Local
+**CSV Analyzer Local**
 
 「サーバーへの送信一切なし。ブラウザで完結する安全なCSV解析」
 
