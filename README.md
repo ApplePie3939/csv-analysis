@@ -27,12 +27,11 @@
 
 技術仕様
 
-項目	　　　　　　内容
-言語	　　　　　　HTML5, CSS3, JavaScript (ES6+)
-ライブラリ	　　　　なし (Vanilla JS 100%)
+言語 HTML5, CSS3, JavaScript (ES6+)
+ライブラリ なし (Vanilla JS 100%)
 ファイル読み込み	FileReader API
-セキュリティ	　　CSP (Content Security Policy)
-動作環境	　　　　Chrome, Edge, Firefox, Safari
+セキュリティ CSP (Content Security Policy)
+動作環境 Chrome, Edge, Firefox, Safari
 
 使い方
 
