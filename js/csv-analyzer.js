@@ -6,6 +6,7 @@ const tableArea = document.getElementById('tableArea');
 const controls = document.getElementById('controls');
 const searchInput = document.getElementById('searchInput');
 const dropArea = document.getElementById('dropArea');
+const fileStatus = document.getElementById('fileStatus');
 
 fileInput.addEventListener('change', () => {
   loadFile(fileInput.files[0]);
@@ -34,18 +35,27 @@ function loadFile(file) {
 
   if (!file.name.toLowerCase().endsWith('.csv')) {
     alert('CSVファイルを選択してください。');
+    fileStatus.textContent = 'CSVファイルを選択またはドロップしてください。';
     fileInput.value = '';
     return;
   }
 
   if (file.size > 5 * 1024 * 1024) {
     alert('ファイルサイズは5MB以内にしてください。');
+    fileStatus.textContent = 'CSVファイルを選択またはドロップしてください。';
     fileInput.value = '';
     return;
   }
 
   const reader = new FileReader();
-  reader.onload = () => parseCSV(reader.result);
+  reader.onload = () => {
+    parseCSV(reader.result);
+    fileStatus.textContent = `読み込み完了: ${file.name}`;
+  };
+  reader.onerror = () => {
+    alert('CSVファイルを読み込めませんでした。');
+    fileStatus.textContent = 'CSVファイルを選択またはドロップしてください。';
+  };
   reader.readAsText(file, 'UTF-8');
   fileInput.value = '';
 }

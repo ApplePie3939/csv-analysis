@@ -32,10 +32,11 @@
 </header>
 
 <div class="box" id="dropArea">
-  <label>
-    CSVファイルを選択：
+  <label class="file-picker">
+    <span class="file-button">CSVファイルを選択</span>
     <input type="file" id="csvFile" accept=".csv">
   </label>
+  <p id="fileStatus" class="file-status">CSVファイルを選択またはドロップしてください。</p>
   <p class="notice">
     ※ ここにCSVファイルをドラッグ＆ドロップできます<br>
     ※ UTF-8 / カンマ区切りCSV対応<br>
