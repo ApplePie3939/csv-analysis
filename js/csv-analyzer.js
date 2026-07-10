@@ -47,6 +47,7 @@ function loadFile(file) {
   const reader = new FileReader();
   reader.onload = () => parseCSV(reader.result);
   reader.readAsText(file, 'UTF-8');
+  fileInput.value = '';
 }
 
 function parseCSV(text) {
