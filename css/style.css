@@ -34,6 +34,16 @@ h2 {
   margin-bottom: 16px;
 }
 
+#dropArea {
+  border: 2px dashed transparent;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+#dropArea.is-dragover {
+  background: #eef7ff;
+  border-color: #4d9de0;
+}
+
 input[type="file"],
 input[type="text"] {
   font-size: 16px;
