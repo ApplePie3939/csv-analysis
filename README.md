@@ -1,68 +1,102 @@
-## CSV Analyzer Local
+# CSV Analyzer Local
 
-**URL** https://csv-analysis.pages.dev/
+CSVファイルをブラウザ上で読み込み、表形式で確認・検索できるシンプルなWebアプリです。
 
-「サーバーへの送信一切なし。ブラウザで完結する安全なCSV解析」
+**公開ページ:** https://csv-analysis.pages.dev/
 
-機密性の高いデータでも安心して中身を確認・検索できる、プライバシー特化型のCSV解析ツールです。
-セキュリティ・ポリシー（最優先事項）
+## 特徴
 
-本ツールは「データのプライバシー」を第一に設計されています。
+- ファイルの選択とドラッグ＆ドロップに対応
+- CSVの内容を表形式で表示
+- キーワード入力による行のリアルタイム絞り込み
+- ダブルクォートで囲まれたカンマ、改行、エスケープされたダブルクォートに対応
+- 外部ライブラリを使わないVanilla JavaScript構成
+- CSVの読み込みから表示まで、すべてブラウザ内で処理
 
-    完全オフライン動作: 選択したCSVファイルは、JavaScriptの FileReader を使用してブラウザのメモリ上でのみ処理されます。
+## プライバシーとセキュリティ
 
-    通信の完全遮断: Content-Security-Policy (CSP) により、外部サーバーへのあらゆるリクエスト（connect-src 'none'）を拒否しています。
+選択したCSVファイルは、`FileReader API`を使ってブラウザのメモリ上で処理されます。ファイルの内容を外部サーバーへ送信する処理はありません。
 
-    依存関係ゼロ: 外部のCDNやライブラリを一切読み込まないため、サプライチェーン攻撃のリスクがありません。
+Cloudflare Pagesでは、`_headers`に定義した以下のセキュリティヘッダーを適用します。
 
-主な機能
+- Content Security Policy（CSP）
+- X-Frame-Options
+- X-Content-Type-Options
+- Referrer-Policy
+- Permissions-Policy
+- Strict-Transport-Security（HSTS）
 
-    ・高速パース: 最大 10,000 行までの CSV をテーブル表示。
+> [!NOTE]
+> ローカルで`index.html`を直接開いた場合、`_headers`のHTTPレスポンスヘッダーは適用されません。
 
-    ・リアルタイム検索: 入力と同時にテーブル行をフィルタリング。
+## 対応するCSV
 
-    ・バリデーション: ファイル形式（.csv）、サイズ（5MB以内）、行数の上限チェック機能を搭載。
+| 項目 | 制限 |
+| --- | --- |
+| 文字コード | UTF-8（BOM付きUTF-8を含む） |
+| 区切り文字 | カンマ |
+| ファイル拡張子 | `.csv` |
+| ファイルサイズ | 5 MB以下 |
+| 行数 | 10,000行以下 |
+| 列数 | 1行あたり1,000列以下 |
+| 総セル数 | 100,000セル以下 |
+| 1セルの長さ | 100,000文字以下 |
 
-    ・CSV仕様対応: ダブルクォート内のカンマ・改行・エスケープ済み引用符に対応。
+## 使い方
 
-    ・文字コード: UTF-8 に対応。
+1. [公開ページ](https://csv-analysis.pages.dev/)を開きます。
+2. 「CSVファイルを選択」からファイルを選ぶか、画面のファイル選択エリアへドラッグ＆ドロップします。
+3. 読み込まれたデータが表形式で表示されます。
+4. 検索欄にキーワードを入力すると、ヘッダーを除く行が絞り込まれます。
 
-技術仕様
+検索では大文字と小文字を区別せず、行内のすべてのセルが対象になります。
 
-    言語 HTML5, CSS3, JavaScript (ES6+)
+## ローカルで実行する
 
-    ライブラリ なし (Vanilla JS 100%)
+ビルドや依存パッケージのインストールは不要です。リポジトリを取得し、`index.html`をブラウザで開いてください。
 
-    ファイル読み込み	FileReader API
+```bash
+git clone https://github.com/ApplePie3939/csv-analysis.git
+cd csv-analysis
+```
 
-    セキュリティ CSP (Content Security Policy)
+HTTPサーバー経由で確認する場合は、任意のローカルサーバーを利用できます。
 
-    動作環境 Chrome, Edge, Firefox, Safari
+```bash
+python -m http.server 8000
+```
 
-使い方
+起動後、ブラウザで `http://localhost:8000` を開きます。
 
-    ①クローンまたはダウンロード
-    1.本リポジトリをクローンまたはダウンロードします。
+## テスト
 
-    2.index.html をブラウザで開きます。
+[Node.js](https://nodejs.org/) 18以降を用意し、リポジトリのルートで次のコマンドを実行します。
 
-    3.CSVファイルをドラッグ＆ドロップ、または選択して読み込みます。
+```bash
+node --test
+```
 
-    4.上部の検索ボックスで、データを自由に絞り込めます。
+CSVパーサーの主要な仕様と入力上限、Cloudflare Pages用セキュリティヘッダーを検証します。
 
-    ②URLをクリック
-    こちらからでも使用が可能です。 https://csv-analysis.pages.dev/
+## ディレクトリ構成
 
-ディレクトリ構成
+```text
+.
+├── index.html                 # 画面構造とブラウザ向けCSP
+├── _headers                   # Cloudflare Pages用HTTPヘッダー
+├── css/
+│   └── style.css              # スタイル
+├── js/
+│   └── csv-analyzer.js        # CSVの読み込み、解析、検索
+└── tests/
+    └── csv-analyzer.test.js   # Node.js標準テストランナーによるテスト
+```
 
-    .
-    ├── index.html          # UI構造とセキュリティ設定
-    ├── css/
-    │   └── style.css       # レイアウト・デザイン
-    └── js/
-        └── csv-analyzer.js # パース・検索ロジック (コアコード)
+## 技術構成
 
-開発者向け情報
-
-このプロジェクトは、外部ツールにデータをアップロードできない環境」でも快適にデータ確認ができるよう作成されました。
-非常に軽量（数KB）なため、社内の共有フォルダや、GitHub Pages等でのホスティングに最適です。
+- HTML5
+- CSS3
+- JavaScript（ES6+）
+- FileReader API
+- Node.js標準テストランナー
+- Cloudflare Pages
