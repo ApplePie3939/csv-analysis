@@ -8,6 +8,13 @@ const searchInput = document.getElementById('searchInput');
 const dropArea = document.getElementById('dropArea');
 const fileStatus = document.getElementById('fileStatus');
 
+const CSV_LIMITS = Object.freeze({
+  maxRows: 10000,
+  maxColumns: 1000,
+  maxCells: 100000,
+  maxCellLength: 100000
+});
+
 fileInput.addEventListener('change', () => {
   loadFile(fileInput.files[0]);
 });
@@ -49,8 +56,9 @@ function loadFile(file) {
 
   const reader = new FileReader();
   reader.onload = () => {
-    parseCSV(reader.result);
-    fileStatus.textContent = `読み込み完了: ${file.name}`;
+    if (parseCSV(reader.result)) {
+      fileStatus.textContent = `読み込み完了: ${file.name}`;
+    }
   };
   reader.onerror = () => {
     alert('CSVファイルを読み込めませんでした。');
@@ -61,11 +69,14 @@ function loadFile(file) {
 }
 
 function parseCSV(text) {
-  const rows = parseCSVRows(text.replace(/^\uFEFF/, ''));
+  let rows;
 
-  if (rows.length > 10000) {
-    alert('行数が多すぎます（最大10,000行）。');
-    return;
+  try {
+    rows = parseCSVRows(text.replace(/^\uFEFF/, ''));
+  } catch (error) {
+    alert(error.message);
+    fileStatus.textContent = 'CSVの制限を超えたため読み込めませんでした。';
+    return false;
   }
 
   const table = document.createElement('table');
@@ -88,13 +99,38 @@ function parseCSV(text) {
 
   enableSearch();
   resultBox.style.display = 'block';
+  return true;
 }
 
-function parseCSVRows(text) {
+function parseCSVRows(text, limits = CSV_LIMITS) {
   const rows = [];
   let row = [];
   let cell = '';
   let inQuotes = false;
+  let cellCount = 0;
+
+  const pushCell = () => {
+    if (row.length >= limits.maxColumns) {
+      throw new Error(`列数が多すぎます（最大${limits.maxColumns.toLocaleString()}列）。`);
+    }
+
+    cellCount += 1;
+    if (cellCount > limits.maxCells) {
+      throw new Error(`セル数が多すぎます（最大${limits.maxCells.toLocaleString()}セル）。`);
+    }
+
+    row.push(cell);
+    cell = '';
+  };
+
+  const pushRow = () => {
+    if (rows.length >= limits.maxRows) {
+      throw new Error(`行数が多すぎます（最大${limits.maxRows.toLocaleString()}行）。`);
+    }
+
+    rows.push(row);
+    row = [];
+  };
 
   for (let i = 0; i < text.length; i += 1) {
     const char = text[i];
@@ -103,6 +139,9 @@ function parseCSVRows(text) {
     if (char === '"') {
       if (inQuotes && nextChar === '"') {
         cell += '"';
+        if (cell.length > limits.maxCellLength) {
+          throw new Error(`セルが長すぎます（最大${limits.maxCellLength.toLocaleString()}文字）。`);
+        }
         i += 1;
       } else {
         inQuotes = !inQuotes;
@@ -111,26 +150,26 @@ function parseCSVRows(text) {
     }
 
     if (char === ',' && !inQuotes) {
-      row.push(cell);
-      cell = '';
+      pushCell();
       continue;
     }
 
     if ((char === '\n' || char === '\r') && !inQuotes) {
       if (char === '\r' && nextChar === '\n') i += 1;
-      row.push(cell);
-      rows.push(row);
-      row = [];
-      cell = '';
+      pushCell();
+      pushRow();
       continue;
     }
 
     cell += char;
+    if (cell.length > limits.maxCellLength) {
+      throw new Error(`セルが長すぎます（最大${limits.maxCellLength.toLocaleString()}文字）。`);
+    }
   }
 
   if (cell !== '' || row.length > 0) {
-    row.push(cell);
-    rows.push(row);
+    pushCell();
+    pushRow();
   }
 
   return rows;
